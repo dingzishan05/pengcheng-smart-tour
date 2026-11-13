@@ -1,0 +1,42 @@
+[project]
+name = "pengcheng-smart-tour"
+version = "1.0.0"
+description = "彭城智游——徐州 AI 城市旅游智能体后端"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "sqlalchemy[asyncio]>=2.0.36",
+    "asyncpg>=0.30",
+    "alembic>=1.14",
+    "pgvector>=0.3.6",
+    "langgraph>=0.2.60",
+    "langgraph-checkpoint-postgres>=2.0.9",
+    "openai>=1.59",
+    "httpx>=0.28",
+    "redis>=5.2",
+    "apscheduler>=3.11",
+    "ortools>=9.11",
+    "bcrypt>=4.2",
+    "PyJWT>=2.10",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.25",
+    "ruff>=0.8",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = ["perf: 性能压测（pytest -m perf 单独运行，默认在全量回归中跳过）"]
+addopts = "-m 'not perf'"
+
+[tool.ruff]
+line-length = 110
+target-version = "py313"

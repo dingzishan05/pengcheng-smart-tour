@@ -1,0 +1,76 @@
+services:
+  nginx:
+    image: pczy/nginx:v1.0.0
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+      args:
+        AMAP_JS_KEY: ${AMAP_JS_KEY}
+        AMAP_SECURITY_CODE: ${AMAP_SECURITY_CODE}
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: always
+    volumes:
+      - nginx_logs:/var/log/nginx
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  backend:
+    image: pczy/backend:v1.0.0
+    build:
+      context: ./backend
+    expose:
+      - "8000"
+    env_file:
+      - .env
+    environment:
+      APP_ENV: production
+      DATABASE_URL: postgresql+asyncpg://pczy:pczy@postgres:5432/pczy
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: always
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: always
+    environment:
+      POSTGRES_USER: pczy
+      POSTGRES_PASSWORD: pczy
+      POSTGRES_DB: pczy
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pczy -d pczy"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
+  nginx_logs:

@@ -1,0 +1,17 @@
+fastapi>=0.115
+uvicorn[standard]>=0.32
+pydantic>=2.9
+pydantic-settings>=2.6
+sqlalchemy[asyncio]>=2.0.36
+asyncpg>=0.30
+alembic>=1.14
+pgvector>=0.3.6
+langgraph>=0.2.60
+langgraph-checkpoint-postgres>=2.0.9
+openai>=1.59
+httpx>=0.28
+redis>=5.2
+apscheduler>=3.11
+ortools>=9.11
+bcrypt>=4.2
+PyJWT>=2.10

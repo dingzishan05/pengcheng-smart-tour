@@ -1,0 +1,58 @@
+# ===== 密钥 / 本地配置（绝对禁止入库）=====
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ===== Python =====
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+coverage/
+
+# ===== Node / 前端 =====
+node_modules/
+dist/
+dist-ssr/
+*.tsbuildinfo
+.vite/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# ===== 日志 =====
+*.log
+logs/
+
+# ===== 大体积二进制（GitHub 单文件 100MB 上限，不要入库）=====
+*.tar.gz
+*.tar
+*.tgz
+*.zip
+*.7z
+*.iso
+*.msi
+*.exe
+*.dump
+*.bak
+wsl-ubuntu/
+
+# ===== 工具 / 缓存 / 快照 =====
+.codeartsdoer/
+.merkle-snapshot.json
+.cache/
+
+# ===== 编辑器 / 系统 =====
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
